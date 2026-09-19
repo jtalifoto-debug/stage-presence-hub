@@ -10,33 +10,219 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AkceRouteImport } from './routes/akce'
+import { Route as HonorareRouteImport } from './routes/honorare'
+import { Route as KalendarRouteImport } from './routes/kalendar'
+import { Route as KarieraRouteImport } from './routes/kariera'
+import { Route as KostymyRouteImport } from './routes/kostymy'
+import { Route as LogistikaRouteImport } from './routes/logistika'
+import { Route as MaterialyRouteImport } from './routes/materialy'
+import { Route as PortfolioRouteImport } from './routes/portfolio'
+import { Route as PripravaRouteImport } from './routes/priprava'
+import { Route as ProjektyRouteImport } from './routes/projekty'
+import { Route as ReflexeRouteImport } from './routes/reflexe'
+import { Route as RegeneraceRouteImport } from './routes/regenerace'
+import { Route as RiderRouteImport } from './routes/rider'
+import { Route as TreninkRouteImport } from './routes/trenink'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AkceRoute = AkceRouteImport.update({
+  id: '/akce',
+  path: '/akce',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HonorareRoute = HonorareRouteImport.update({
+  id: '/honorare',
+  path: '/honorare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KalendarRoute = KalendarRouteImport.update({
+  id: '/kalendar',
+  path: '/kalendar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KarieraRoute = KarieraRouteImport.update({
+  id: '/kariera',
+  path: '/kariera',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KostymyRoute = KostymyRouteImport.update({
+  id: '/kostymy',
+  path: '/kostymy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LogistikaRoute = LogistikaRouteImport.update({
+  id: '/logistika',
+  path: '/logistika',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MaterialyRoute = MaterialyRouteImport.update({
+  id: '/materialy',
+  path: '/materialy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortfolioRoute = PortfolioRouteImport.update({
+  id: '/portfolio',
+  path: '/portfolio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PripravaRoute = PripravaRouteImport.update({
+  id: '/priprava',
+  path: '/priprava',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjektyRoute = ProjektyRouteImport.update({
+  id: '/projekty',
+  path: '/projekty',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReflexeRoute = ReflexeRouteImport.update({
+  id: '/reflexe',
+  path: '/reflexe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegeneraceRoute = RegeneraceRouteImport.update({
+  id: '/regenerace',
+  path: '/regenerace',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RiderRoute = RiderRouteImport.update({
+  id: '/rider',
+  path: '/rider',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TreninkRoute = TreninkRouteImport.update({
+  id: '/trenink',
+  path: '/trenink',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/akce': typeof AkceRoute
+  '/honorare': typeof HonorareRoute
+  '/kalendar': typeof KalendarRoute
+  '/kariera': typeof KarieraRoute
+  '/kostymy': typeof KostymyRoute
+  '/logistika': typeof LogistikaRoute
+  '/materialy': typeof MaterialyRoute
+  '/portfolio': typeof PortfolioRoute
+  '/priprava': typeof PripravaRoute
+  '/projekty': typeof ProjektyRoute
+  '/reflexe': typeof ReflexeRoute
+  '/regenerace': typeof RegeneraceRoute
+  '/rider': typeof RiderRoute
+  '/trenink': typeof TreninkRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/akce': typeof AkceRoute
+  '/honorare': typeof HonorareRoute
+  '/kalendar': typeof KalendarRoute
+  '/kariera': typeof KarieraRoute
+  '/kostymy': typeof KostymyRoute
+  '/logistika': typeof LogistikaRoute
+  '/materialy': typeof MaterialyRoute
+  '/portfolio': typeof PortfolioRoute
+  '/priprava': typeof PripravaRoute
+  '/projekty': typeof ProjektyRoute
+  '/reflexe': typeof ReflexeRoute
+  '/regenerace': typeof RegeneraceRoute
+  '/rider': typeof RiderRoute
+  '/trenink': typeof TreninkRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/akce': typeof AkceRoute
+  '/honorare': typeof HonorareRoute
+  '/kalendar': typeof KalendarRoute
+  '/kariera': typeof KarieraRoute
+  '/kostymy': typeof KostymyRoute
+  '/logistika': typeof LogistikaRoute
+  '/materialy': typeof MaterialyRoute
+  '/portfolio': typeof PortfolioRoute
+  '/priprava': typeof PripravaRoute
+  '/projekty': typeof ProjektyRoute
+  '/reflexe': typeof ReflexeRoute
+  '/regenerace': typeof RegeneraceRoute
+  '/rider': typeof RiderRoute
+  '/trenink': typeof TreninkRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/akce'
+    | '/honorare'
+    | '/kalendar'
+    | '/kariera'
+    | '/kostymy'
+    | '/logistika'
+    | '/materialy'
+    | '/portfolio'
+    | '/priprava'
+    | '/projekty'
+    | '/reflexe'
+    | '/regenerace'
+    | '/rider'
+    | '/trenink'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/akce'
+    | '/honorare'
+    | '/kalendar'
+    | '/kariera'
+    | '/kostymy'
+    | '/logistika'
+    | '/materialy'
+    | '/portfolio'
+    | '/priprava'
+    | '/projekty'
+    | '/reflexe'
+    | '/regenerace'
+    | '/rider'
+    | '/trenink'
+  id:
+    | '__root__'
+    | '/'
+    | '/akce'
+    | '/honorare'
+    | '/kalendar'
+    | '/kariera'
+    | '/kostymy'
+    | '/logistika'
+    | '/materialy'
+    | '/portfolio'
+    | '/priprava'
+    | '/projekty'
+    | '/reflexe'
+    | '/regenerace'
+    | '/rider'
+    | '/trenink'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AkceRoute: typeof AkceRoute
+  HonorareRoute: typeof HonorareRoute
+  KalendarRoute: typeof KalendarRoute
+  KarieraRoute: typeof KarieraRoute
+  KostymyRoute: typeof KostymyRoute
+  LogistikaRoute: typeof LogistikaRoute
+  MaterialyRoute: typeof MaterialyRoute
+  PortfolioRoute: typeof PortfolioRoute
+  PripravaRoute: typeof PripravaRoute
+  ProjektyRoute: typeof ProjektyRoute
+  ReflexeRoute: typeof ReflexeRoute
+  RegeneraceRoute: typeof RegeneraceRoute
+  RiderRoute: typeof RiderRoute
+  TreninkRoute: typeof TreninkRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +234,123 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/akce': {
+      id: '/akce'
+      path: '/akce'
+      fullPath: '/akce'
+      preLoaderRoute: typeof AkceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/honorare': {
+      id: '/honorare'
+      path: '/honorare'
+      fullPath: '/honorare'
+      preLoaderRoute: typeof HonorareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kalendar': {
+      id: '/kalendar'
+      path: '/kalendar'
+      fullPath: '/kalendar'
+      preLoaderRoute: typeof KalendarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kariera': {
+      id: '/kariera'
+      path: '/kariera'
+      fullPath: '/kariera'
+      preLoaderRoute: typeof KarieraRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kostymy': {
+      id: '/kostymy'
+      path: '/kostymy'
+      fullPath: '/kostymy'
+      preLoaderRoute: typeof KostymyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/logistika': {
+      id: '/logistika'
+      path: '/logistika'
+      fullPath: '/logistika'
+      preLoaderRoute: typeof LogistikaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/materialy': {
+      id: '/materialy'
+      path: '/materialy'
+      fullPath: '/materialy'
+      preLoaderRoute: typeof MaterialyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portfolio': {
+      id: '/portfolio'
+      path: '/portfolio'
+      fullPath: '/portfolio'
+      preLoaderRoute: typeof PortfolioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/priprava': {
+      id: '/priprava'
+      path: '/priprava'
+      fullPath: '/priprava'
+      preLoaderRoute: typeof PripravaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projekty': {
+      id: '/projekty'
+      path: '/projekty'
+      fullPath: '/projekty'
+      preLoaderRoute: typeof ProjektyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reflexe': {
+      id: '/reflexe'
+      path: '/reflexe'
+      fullPath: '/reflexe'
+      preLoaderRoute: typeof ReflexeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/regenerace': {
+      id: '/regenerace'
+      path: '/regenerace'
+      fullPath: '/regenerace'
+      preLoaderRoute: typeof RegeneraceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rider': {
+      id: '/rider'
+      path: '/rider'
+      fullPath: '/rider'
+      preLoaderRoute: typeof RiderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trenink': {
+      id: '/trenink'
+      path: '/trenink'
+      fullPath: '/trenink'
+      preLoaderRoute: typeof TreninkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AkceRoute: AkceRoute,
+  HonorareRoute: HonorareRoute,
+  KalendarRoute: KalendarRoute,
+  KarieraRoute: KarieraRoute,
+  KostymyRoute: KostymyRoute,
+  LogistikaRoute: LogistikaRoute,
+  MaterialyRoute: MaterialyRoute,
+  PortfolioRoute: PortfolioRoute,
+  PripravaRoute: PripravaRoute,
+  ProjektyRoute: ProjektyRoute,
+  ReflexeRoute: ReflexeRoute,
+  RegeneraceRoute: RegeneraceRoute,
+  RiderRoute: RiderRoute,
+  TreninkRoute: TreninkRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
