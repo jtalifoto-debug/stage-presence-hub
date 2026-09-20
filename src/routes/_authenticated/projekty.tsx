@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Chip, Eyebrow, Meter, PageHeader, Panel, Progress } from "@/components/perf/ui";
 import { projects, sceneProgress, credits } from "@/lib/performer-data";
 
-export const Route = createFileRoute("/projekty")({
+export const Route = createFileRoute("/_authenticated/projekty")({
   head: () => ({
     meta: [
       { title: "Projekty & role — Performer OS" },

@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Chip, Eyebrow, PageHeader, Panel, Scale } from "@/components/perf/ui";
 import { recoveryInsight, recoveryLog } from "@/lib/performer-data";
 
-export const Route = createFileRoute("/regenerace")({
+export const Route = createFileRoute("/_authenticated/regenerace")({
   head: () => ({
     meta: [
       { title: "Regenerace — Performer OS" },

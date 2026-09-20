@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Eyebrow, PageHeader, Panel, Scale } from "@/components/perf/ui";
 import { reflections } from "@/lib/performer-data";
 
-export const Route = createFileRoute("/reflexe")({
+export const Route = createFileRoute("/_authenticated/reflexe")({
   head: () => ({
     meta: [
       { title: "Reflexe po akci — Performer OS" },

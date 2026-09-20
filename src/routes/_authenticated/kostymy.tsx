@@ -4,7 +4,7 @@ import { Checklist, Chip, Eyebrow, PageHeader, Panel } from "@/components/perf/u
 import { bagItems, costumeItems, events } from "@/lib/performer-data";
 import { formatDateCz } from "@/lib/performer-schedule";
 
-export const Route = createFileRoute("/kostymy")({
+export const Route = createFileRoute("/_authenticated/kostymy")({
   head: () => ({
     meta: [
       { title: "Kostýmy a taška — Performer OS" },

@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Chip, Eyebrow, PageHeader, Panel, Progress, StatCard } from "@/components/perf/ui";
 import { finance, formatCzk } from "@/lib/performer-data";
 
-export const Route = createFileRoute("/honorare")({
+export const Route = createFileRoute("/_authenticated/honorare")({
   head: () => ({
     meta: [
       { title: "Honoráře a peníze — Performer OS" },

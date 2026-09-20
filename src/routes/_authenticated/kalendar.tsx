@@ -10,7 +10,7 @@ import {
   weekdayCz,
 } from "@/lib/performer-schedule";
 
-export const Route = createFileRoute("/kalendar")({
+export const Route = createFileRoute("/_authenticated/kalendar")({
   head: () => ({
     meta: [
       { title: "Kalendář závazků — Performer OS" },

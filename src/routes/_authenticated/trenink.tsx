@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Chip, Eyebrow, Meter, PageHeader, Panel, StatCard } from "@/components/perf/ui";
 import { bodyFocus, performanceFocus, performanceSkills, trainingLog } from "@/lib/performer-data";
 
-export const Route = createFileRoute("/trenink")({
+export const Route = createFileRoute("/_authenticated/trenink")({
   head: () => ({
     meta: [
       { title: "Trénink — Performer OS" },

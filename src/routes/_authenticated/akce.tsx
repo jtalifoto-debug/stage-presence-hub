@@ -11,7 +11,7 @@ import {
   travelMinutes,
 } from "@/lib/performer-schedule";
 
-export const Route = createFileRoute("/akce")({
+export const Route = createFileRoute("/_authenticated/akce")({
   head: () => ({
     meta: [
       { title: "Akce a detaily — Performer OS" },

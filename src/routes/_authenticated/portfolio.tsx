@@ -4,7 +4,7 @@ import stageImg from "@/assets/stage.jpg";
 import { Chip, Eyebrow, PageHeader, Panel } from "@/components/perf/ui";
 import { credits, materialGroups, performer } from "@/lib/performer-data";
 
-export const Route = createFileRoute("/portfolio")({
+export const Route = createFileRoute("/_authenticated/portfolio")({
   head: () => ({
     meta: [
       { title: "Portfolio — Performer OS" },

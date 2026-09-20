@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Chip, Eyebrow, Meter, PageHeader, Panel } from "@/components/perf/ui";
 import { careerTracks } from "@/lib/performer-data";
 
-export const Route = createFileRoute("/kariera")({
+export const Route = createFileRoute("/_authenticated/kariera")({
   head: () => ({
     meta: [
       { title: "Kariéra a rozvoj — Performer OS" },
