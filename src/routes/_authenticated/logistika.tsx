@@ -4,7 +4,7 @@ import { Chip, Eyebrow, PageHeader, Panel, StatCard } from "@/components/perf/ui
 import { events, logistics } from "@/lib/performer-data";
 import { buildRunsheet, formatDateCz, travelMinutes } from "@/lib/performer-schedule";
 
-export const Route = createFileRoute("/logistika")({
+export const Route = createFileRoute("/_authenticated/logistika")({
   head: () => ({
     meta: [
       { title: "Logistika a cesta — Performer OS" },

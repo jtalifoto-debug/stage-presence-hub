@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Eyebrow, PageHeader, Panel } from "@/components/perf/ui";
 import { materialGroups, materialsByProject } from "@/lib/performer-data";
 
-export const Route = createFileRoute("/materialy")({
+export const Route = createFileRoute("/_authenticated/materialy")({
   head: () => ({
     meta: [
       { title: "Materiály — Performer OS" },

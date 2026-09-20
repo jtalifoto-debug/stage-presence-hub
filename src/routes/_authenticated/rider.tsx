@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Checklist, Eyebrow, PageHeader, Panel } from "@/components/perf/ui";
 import { riderSections } from "@/lib/performer-data";
 
-export const Route = createFileRoute("/rider")({
+export const Route = createFileRoute("/_authenticated/rider")({
   head: () => ({
     meta: [
       { title: "Technický rider — Performer OS" },

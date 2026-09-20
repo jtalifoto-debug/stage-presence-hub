@@ -4,7 +4,7 @@ import { Checklist, Chip, Eyebrow, Meter, PageHeader, Panel } from "@/components
 import { events, performanceSkills } from "@/lib/performer-data";
 import { buildEventPrep, buildRunsheet, formatDateCz, prepScore } from "@/lib/performer-schedule";
 
-export const Route = createFileRoute("/priprava")({
+export const Route = createFileRoute("/_authenticated/priprava")({
   head: () => ({
     meta: [
       { title: "Příprava výkonu — Performer OS" },
