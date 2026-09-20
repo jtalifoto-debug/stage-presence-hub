@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedAkceRouteImport } from './routes/_authenticated/akce'
 import { Route as AuthenticatedHonorareRouteImport } from './routes/_authenticated/honorare'
@@ -25,83 +26,88 @@ import { Route as AuthenticatedRegeneraceRouteImport } from './routes/_authentic
 import { Route as AuthenticatedRiderRouteImport } from './routes/_authenticated/rider'
 import { Route as AuthenticatedTreninkRouteImport } from './routes/_authenticated/trenink'
 
-const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
-  id: '/_authenticated/',
-  path: '/',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedAkceRoute = AuthenticatedAkceRouteImport.update({
-  id: '/_authenticated/akce',
+  id: '/akce',
   path: '/akce',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedHonorareRoute = AuthenticatedHonorareRouteImport.update({
-  id: '/_authenticated/honorare',
+  id: '/honorare',
   path: '/honorare',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedKalendarRoute = AuthenticatedKalendarRouteImport.update({
-  id: '/_authenticated/kalendar',
+  id: '/kalendar',
   path: '/kalendar',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedKarieraRoute = AuthenticatedKarieraRouteImport.update({
-  id: '/_authenticated/kariera',
+  id: '/kariera',
   path: '/kariera',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedKostymyRoute = AuthenticatedKostymyRouteImport.update({
-  id: '/_authenticated/kostymy',
+  id: '/kostymy',
   path: '/kostymy',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedLogistikaRoute = AuthenticatedLogistikaRouteImport.update({
-  id: '/_authenticated/logistika',
+  id: '/logistika',
   path: '/logistika',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedMaterialyRoute = AuthenticatedMaterialyRouteImport.update({
-  id: '/_authenticated/materialy',
+  id: '/materialy',
   path: '/materialy',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedPortfolioRoute = AuthenticatedPortfolioRouteImport.update({
-  id: '/_authenticated/portfolio',
+  id: '/portfolio',
   path: '/portfolio',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedPripravaRoute = AuthenticatedPripravaRouteImport.update({
-  id: '/_authenticated/priprava',
+  id: '/priprava',
   path: '/priprava',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedProjektyRoute = AuthenticatedProjektyRouteImport.update({
-  id: '/_authenticated/projekty',
+  id: '/projekty',
   path: '/projekty',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedReflexeRoute = AuthenticatedReflexeRouteImport.update({
-  id: '/_authenticated/reflexe',
+  id: '/reflexe',
   path: '/reflexe',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedRegeneraceRoute = AuthenticatedRegeneraceRouteImport.update({
-  id: '/_authenticated/regenerace',
+  id: '/regenerace',
   path: '/regenerace',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedRiderRoute = AuthenticatedRiderRouteImport.update({
-  id: '/_authenticated/rider',
+  id: '/rider',
   path: '/rider',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedTreninkRoute = AuthenticatedTreninkRouteImport.update({
-  id: '/_authenticated/trenink',
+  id: '/trenink',
   path: '/trenink',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof AuthenticatedIndexRoute
   '/akce': typeof AuthenticatedAkceRoute
   '/honorare': typeof AuthenticatedHonorareRoute
   '/kalendar': typeof AuthenticatedKalendarRoute
@@ -116,7 +122,6 @@ export interface FileRoutesByFullPath {
   '/regenerace': typeof AuthenticatedRegeneraceRoute
   '/rider': typeof AuthenticatedRiderRoute
   '/trenink': typeof AuthenticatedTreninkRoute
-  '/': typeof AuthenticatedIndexRoute
 }
 export interface FileRoutesByTo {
   '/akce': typeof AuthenticatedAkceRoute
@@ -137,6 +142,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/_authenticated/akce': typeof AuthenticatedAkceRoute
   '/_authenticated/honorare': typeof AuthenticatedHonorareRoute
   '/_authenticated/kalendar': typeof AuthenticatedKalendarRoute
@@ -156,6 +162,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/akce'
     | '/honorare'
     | '/kalendar'
@@ -170,7 +177,6 @@ export interface FileRouteTypes {
     | '/regenerace'
     | '/rider'
     | '/trenink'
-    | '/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/akce'
@@ -190,6 +196,7 @@ export interface FileRouteTypes {
     | '/'
   id:
     | '__root__'
+    | '/_authenticated'
     | '/_authenticated/akce'
     | '/_authenticated/honorare'
     | '/_authenticated/kalendar'
@@ -208,6 +215,127 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+}
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/': {
+      id: '/_authenticated/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/akce': {
+      id: '/_authenticated/akce'
+      path: '/akce'
+      fullPath: '/akce'
+      preLoaderRoute: typeof AuthenticatedAkceRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/honorare': {
+      id: '/_authenticated/honorare'
+      path: '/honorare'
+      fullPath: '/honorare'
+      preLoaderRoute: typeof AuthenticatedHonorareRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/kalendar': {
+      id: '/_authenticated/kalendar'
+      path: '/kalendar'
+      fullPath: '/kalendar'
+      preLoaderRoute: typeof AuthenticatedKalendarRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/kariera': {
+      id: '/_authenticated/kariera'
+      path: '/kariera'
+      fullPath: '/kariera'
+      preLoaderRoute: typeof AuthenticatedKarieraRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/kostymy': {
+      id: '/_authenticated/kostymy'
+      path: '/kostymy'
+      fullPath: '/kostymy'
+      preLoaderRoute: typeof AuthenticatedKostymyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/logistika': {
+      id: '/_authenticated/logistika'
+      path: '/logistika'
+      fullPath: '/logistika'
+      preLoaderRoute: typeof AuthenticatedLogistikaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/materialy': {
+      id: '/_authenticated/materialy'
+      path: '/materialy'
+      fullPath: '/materialy'
+      preLoaderRoute: typeof AuthenticatedMaterialyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/portfolio': {
+      id: '/_authenticated/portfolio'
+      path: '/portfolio'
+      fullPath: '/portfolio'
+      preLoaderRoute: typeof AuthenticatedPortfolioRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/priprava': {
+      id: '/_authenticated/priprava'
+      path: '/priprava'
+      fullPath: '/priprava'
+      preLoaderRoute: typeof AuthenticatedPripravaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/projekty': {
+      id: '/_authenticated/projekty'
+      path: '/projekty'
+      fullPath: '/projekty'
+      preLoaderRoute: typeof AuthenticatedProjektyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/reflexe': {
+      id: '/_authenticated/reflexe'
+      path: '/reflexe'
+      fullPath: '/reflexe'
+      preLoaderRoute: typeof AuthenticatedReflexeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/regenerace': {
+      id: '/_authenticated/regenerace'
+      path: '/regenerace'
+      fullPath: '/regenerace'
+      preLoaderRoute: typeof AuthenticatedRegeneraceRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/rider': {
+      id: '/_authenticated/rider'
+      path: '/rider'
+      fullPath: '/rider'
+      preLoaderRoute: typeof AuthenticatedRiderRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/trenink': {
+      id: '/_authenticated/trenink'
+      path: '/trenink'
+      fullPath: '/trenink'
+      preLoaderRoute: typeof AuthenticatedTreninkRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+  }
+}
+
+interface AuthenticatedRouteRouteChildren {
   AuthenticatedAkceRoute: typeof AuthenticatedAkceRoute
   AuthenticatedHonorareRoute: typeof AuthenticatedHonorareRoute
   AuthenticatedKalendarRoute: typeof AuthenticatedKalendarRoute
@@ -225,117 +353,7 @@ export interface RootRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
 
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/_authenticated/': {
-      id: '/_authenticated/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/akce': {
-      id: '/_authenticated/akce'
-      path: '/akce'
-      fullPath: '/akce'
-      preLoaderRoute: typeof AuthenticatedAkceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/honorare': {
-      id: '/_authenticated/honorare'
-      path: '/honorare'
-      fullPath: '/honorare'
-      preLoaderRoute: typeof AuthenticatedHonorareRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/kalendar': {
-      id: '/_authenticated/kalendar'
-      path: '/kalendar'
-      fullPath: '/kalendar'
-      preLoaderRoute: typeof AuthenticatedKalendarRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/kariera': {
-      id: '/_authenticated/kariera'
-      path: '/kariera'
-      fullPath: '/kariera'
-      preLoaderRoute: typeof AuthenticatedKarieraRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/kostymy': {
-      id: '/_authenticated/kostymy'
-      path: '/kostymy'
-      fullPath: '/kostymy'
-      preLoaderRoute: typeof AuthenticatedKostymyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/logistika': {
-      id: '/_authenticated/logistika'
-      path: '/logistika'
-      fullPath: '/logistika'
-      preLoaderRoute: typeof AuthenticatedLogistikaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/materialy': {
-      id: '/_authenticated/materialy'
-      path: '/materialy'
-      fullPath: '/materialy'
-      preLoaderRoute: typeof AuthenticatedMaterialyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/portfolio': {
-      id: '/_authenticated/portfolio'
-      path: '/portfolio'
-      fullPath: '/portfolio'
-      preLoaderRoute: typeof AuthenticatedPortfolioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/priprava': {
-      id: '/_authenticated/priprava'
-      path: '/priprava'
-      fullPath: '/priprava'
-      preLoaderRoute: typeof AuthenticatedPripravaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/projekty': {
-      id: '/_authenticated/projekty'
-      path: '/projekty'
-      fullPath: '/projekty'
-      preLoaderRoute: typeof AuthenticatedProjektyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/reflexe': {
-      id: '/_authenticated/reflexe'
-      path: '/reflexe'
-      fullPath: '/reflexe'
-      preLoaderRoute: typeof AuthenticatedReflexeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/regenerace': {
-      id: '/_authenticated/regenerace'
-      path: '/regenerace'
-      fullPath: '/regenerace'
-      preLoaderRoute: typeof AuthenticatedRegeneraceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/rider': {
-      id: '/_authenticated/rider'
-      path: '/rider'
-      fullPath: '/rider'
-      preLoaderRoute: typeof AuthenticatedRiderRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/trenink': {
-      id: '/_authenticated/trenink'
-      path: '/trenink'
-      fullPath: '/trenink'
-      preLoaderRoute: typeof AuthenticatedTreninkRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-  }
-}
-
-const rootRouteChildren: RootRouteChildren = {
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAkceRoute: AuthenticatedAkceRoute,
   AuthenticatedHonorareRoute: AuthenticatedHonorareRoute,
   AuthenticatedKalendarRoute: AuthenticatedKalendarRoute,
@@ -351,6 +369,13 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRiderRoute: AuthenticatedRiderRoute,
   AuthenticatedTreninkRoute: AuthenticatedTreninkRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
