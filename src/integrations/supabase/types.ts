@@ -14,7 +14,104 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      backups: {
+        Row: {
+          created_at: string
+          data: Json
+          id: string
+          kind: string
+          label: string
+          owner_id: string
+          performer_id: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json
+          id?: string
+          kind?: string
+          label?: string
+          owner_id: string
+          performer_id: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          id?: string
+          kind?: string
+          label?: string
+          owner_id?: string
+          performer_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "backups_performer_id_fkey"
+            columns: ["performer_id"]
+            isOneToOne: false
+            referencedRelation: "performers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      performers: {
+        Row: {
+          created_at: string
+          data: Json
+          home: string
+          id: string
+          is_demo: boolean
+          name: string
+          owner_id: string
+          roles: string[]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json
+          home?: string
+          id?: string
+          is_demo?: boolean
+          name?: string
+          owner_id: string
+          roles?: string[]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          home?: string
+          id?: string
+          is_demo?: boolean
+          name?: string
+          owner_id?: string
+          roles?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          account_type: string
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          account_type?: string
+          created_at?: string
+          display_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          account_type?: string
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
