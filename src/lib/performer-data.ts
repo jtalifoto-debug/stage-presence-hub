@@ -450,6 +450,8 @@ export const nav = [
   { to: "/kariera", icon: "📈", label: "Kariéra" },
   { to: "/regenerace", icon: "🧘", label: "Regenerace" },
   { to: "/reflexe", icon: "📝", label: "Reflexe" },
+  { to: "/performeri", icon: "👥", label: "Performeři" },
+  { to: "/zalohy", icon: "🗂", label: "Zálohy" },
 ] as const;
 
 export function formatCzk(value: number) {
