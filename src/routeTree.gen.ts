@@ -27,6 +27,7 @@ import { Route as AuthenticatedReflexeRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedRegeneraceRouteImport } from './routes/_authenticated/regenerace'
 import { Route as AuthenticatedRiderRouteImport } from './routes/_authenticated/rider'
 import { Route as AuthenticatedTreninkRouteImport } from './routes/_authenticated/trenink'
+import { Route as AuthenticatedZalohyRouteImport } from './routes/_authenticated/zalohy'
 
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
@@ -117,6 +118,11 @@ const AuthenticatedTreninkRoute = AuthenticatedTreninkRouteImport.update({
   path: '/trenink',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedZalohyRoute = AuthenticatedZalohyRouteImport.update({
+  id: '/zalohy',
+  path: '/zalohy',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
@@ -136,6 +142,7 @@ export interface FileRoutesByFullPath {
   '/regenerace': typeof AuthenticatedRegeneraceRoute
   '/rider': typeof AuthenticatedRiderRoute
   '/trenink': typeof AuthenticatedTreninkRoute
+  '/zalohy': typeof AuthenticatedZalohyRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
@@ -154,6 +161,7 @@ export interface FileRoutesByTo {
   '/regenerace': typeof AuthenticatedRegeneraceRoute
   '/rider': typeof AuthenticatedRiderRoute
   '/trenink': typeof AuthenticatedTreninkRoute
+  '/zalohy': typeof AuthenticatedZalohyRoute
   '/': typeof AuthenticatedIndexRoute
 }
 export interface FileRoutesById {
@@ -175,6 +183,7 @@ export interface FileRoutesById {
   '/_authenticated/regenerace': typeof AuthenticatedRegeneraceRoute
   '/_authenticated/rider': typeof AuthenticatedRiderRoute
   '/_authenticated/trenink': typeof AuthenticatedTreninkRoute
+  '/_authenticated/zalohy': typeof AuthenticatedZalohyRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
 }
 export interface FileRouteTypes {
@@ -197,6 +206,7 @@ export interface FileRouteTypes {
     | '/regenerace'
     | '/rider'
     | '/trenink'
+    | '/zalohy'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
@@ -215,6 +225,7 @@ export interface FileRouteTypes {
     | '/regenerace'
     | '/rider'
     | '/trenink'
+    | '/zalohy'
     | '/'
   id:
     | '__root__'
@@ -235,6 +246,7 @@ export interface FileRouteTypes {
     | '/_authenticated/regenerace'
     | '/_authenticated/rider'
     | '/_authenticated/trenink'
+    | '/_authenticated/zalohy'
     | '/_authenticated/'
   fileRoutesById: FileRoutesById
 }
@@ -371,6 +383,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTreninkRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/zalohy': {
+      id: '/_authenticated/zalohy'
+      path: '/zalohy'
+      fullPath: '/zalohy'
+      preLoaderRoute: typeof AuthenticatedZalohyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -390,6 +409,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRegeneraceRoute: typeof AuthenticatedRegeneraceRoute
   AuthenticatedRiderRoute: typeof AuthenticatedRiderRoute
   AuthenticatedTreninkRoute: typeof AuthenticatedTreninkRoute
+  AuthenticatedZalohyRoute: typeof AuthenticatedZalohyRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
 }
 
@@ -409,6 +429,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRegeneraceRoute: AuthenticatedRegeneraceRoute,
   AuthenticatedRiderRoute: AuthenticatedRiderRoute,
   AuthenticatedTreninkRoute: AuthenticatedTreninkRoute,
+  AuthenticatedZalohyRoute: AuthenticatedZalohyRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
 }
 

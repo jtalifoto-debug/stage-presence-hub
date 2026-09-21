@@ -122,22 +122,6 @@ function Sidebar() {
         </div>
       </div>
 
-      <div className="mb-2 px-2 text-[10px] tracking-widest text-mist uppercase">Co děláš</div>
-      <div className="mb-5 flex flex-wrap gap-1.5 px-1">
-        {performer.roles.map((role) => (
-          <span
-            key={role}
-            className={`rounded-full border px-2.5 py-1 text-[11px] ${
-              role === performer.activeRole
-                ? "border-brand/40 bg-brand/20 text-foreground"
-                : "border-border bg-foreground/5 text-mist"
-            }`}
-          >
-            {role}
-          </span>
-        ))}
-      </div>
-
       <nav className="space-y-0.5">
         {nav.map((item) => (
           <Link
