@@ -155,3 +155,37 @@ export function prepScore(event: PerfEvent) {
   const items = buildEventPrep(event);
   return Math.round((items.filter((i) => i.done).length / items.length) * 100);
 }
+
+export function sortEvents<T extends { date: string; time: string }>(list: T[]) {
+  return [...list].sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+}
+
+export function todayIso() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+export function nowHm() {
+  const d = new Date();
+  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
+
+/** Nearest event that is not finished, preferring today and the future. */
+export function nextEvent<T extends PerfEvent>(list: T[]): T | undefined {
+  const sorted = sortEvents(list).filter((e) => e.status !== "hotovo");
+  const today = todayIso();
+  return sorted.find((e) => e.date >= today) ?? sorted[sorted.length - 1];
+}
+
+/** Runsheet whose "now" marker reflects the real clock only on the day itself. */
+export function liveRunsheet(event: PerfEvent) {
+  const today = todayIso();
+  if (event.date === today) return buildRunsheet(event, nowHm());
+  return buildRunsheet(event, event.date < today ? "23:59" : "00:00");
+}
+
+export function daysUntil(iso: string) {
+  const a = new Date(`${todayIso()}T12:00:00`).getTime();
+  const b = new Date(`${iso}T12:00:00`).getTime();
+  return Math.round((b - a) / 86400000);
+}
