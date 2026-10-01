@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { RecordEditor, type Field } from "@/components/perf/editable";
 import { Chip, Eyebrow, Meter, PageHeader, Panel } from "@/components/perf/ui";
-import { careerTracks } from "@/lib/performer-data";
+import { useWorkspace } from "@/lib/workspace";
+import { uid, type CareerRow } from "@/lib/workspace-types";
 
 export const Route = createFileRoute("/_authenticated/kariera")({
   head: () => ({
@@ -12,54 +14,71 @@ export const Route = createFileRoute("/_authenticated/kariera")({
         content: "Kariérní linky performera: tanec, herectví, moderování, choreografie a hlas.",
       },
       { property: "og:title", content: "Kariéra a rozvoj — Performer OS" },
-      {
-        property: "og:description",
-        content: "Kde jsi silná, co roste a co posunout dál.",
-      },
+      { property: "og:description", content: "Kde jsi silná, co roste a co posunout dál." },
     ],
   }),
   component: CareerPage,
 });
 
+const fields: Field<CareerRow>[] = [
+  { key: "label", label: "Linka", width: "lg" },
+  { key: "value", label: "Úroveň (%)", type: "number" },
+  { key: "skills", label: "Dovednosti (oddělené čárkou)", width: "lg" },
+];
+
 function CareerPage() {
-  const strongest = [...careerTracks].sort((a, b) => b.value - a.value)[0];
-  const growth = [...careerTracks].sort((a, b) => a.value - b.value)[0];
+  const { ws, patch } = useWorkspace();
+  const tracks = ws.career;
+  const strongest = [...tracks].sort((a, b) => b.value - a.value)[0];
+  const growth = [...tracks].sort((a, b) => a.value - b.value)[0];
 
   return (
     <>
       <PageHeader eyebrow="📈 Dlouhá hra" title="Kariéra" />
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <Panel soft>
-          <Eyebrow>Nejsilnější linka</Eyebrow>
-          <div className="font-display text-xl font-semibold">{strongest.label}</div>
-          <p className="mt-2 text-sm text-mist">
-            Drž si ji zakázkami a jednou novou výzvou za sezónu.
-          </p>
-        </Panel>
-        <Panel soft>
-          <Eyebrow>Největší prostor k růstu</Eyebrow>
-          <div className="font-display text-xl font-semibold">{growth.label}</div>
-          <p className="mt-2 text-sm text-mist">
-            Naplánuj si pravidelný trénink 2× týdně a jeden mentoring.
-          </p>
-        </Panel>
-      </div>
+      {tracks.length ? (
+        <div className="grid gap-4 md:grid-cols-2">
+          <Panel soft>
+            <Eyebrow>Nejsilnější linka</Eyebrow>
+            <div className="font-display text-xl font-semibold">{strongest?.label}</div>
+          </Panel>
+          <Panel soft>
+            <Eyebrow>Největší prostor k růstu</Eyebrow>
+            <div className="font-display text-xl font-semibold">{growth?.label}</div>
+          </Panel>
+        </div>
+      ) : null}
 
-      <div className="space-y-4">
-        {careerTracks.map((track) => (
-          <Panel key={track.label}>
-            <Meter label={track.label} value={track.value} />
+      <div className="grid gap-4 md:grid-cols-2">
+        {tracks.map((track) => (
+          <Panel key={track.id}>
+            <Meter label={track.label} value={Number(track.value) || 0} />
             <div className="mt-4 flex flex-wrap gap-2">
-              {track.skills.map((s) => (
-                <Chip key={s} tone="accent">
-                  {s}
-                </Chip>
-              ))}
+              {track.skills
+                .split(",")
+                .map((s) => s.trim())
+                .filter(Boolean)
+                .map((s) => (
+                  <Chip key={s} tone="accent">
+                    {s}
+                  </Chip>
+                ))}
             </div>
           </Panel>
         ))}
       </div>
+
+      <Panel>
+        <RecordEditor
+          title="Upravit kariérní linky"
+          items={tracks}
+          fields={fields}
+          titleKey="label"
+          addLabel="Přidat linku"
+          makeNew={() => ({ id: uid(), label: "Nová linka", value: 30, skills: "" })}
+          onChange={(next) => patch((w) => ({ ...w, career: next }))}
+        />
+      </Panel>
     </>
   );
 }

@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { RecordEditor, type Field } from "@/components/perf/editable";
 import { Eyebrow, PageHeader, Panel } from "@/components/perf/ui";
-import { materialGroups, materialsByProject } from "@/lib/performer-data";
+import { useWorkspace } from "@/lib/workspace";
+import { uid, type MaterialRow } from "@/lib/workspace-types";
 
 export const Route = createFileRoute("/_authenticated/materialy")({
   head: () => ({
@@ -13,48 +15,65 @@ export const Route = createFileRoute("/_authenticated/materialy")({
           "Hudba, videa, scénáře, choreografie a reference roztříděné podle typu i podle projektu.",
       },
       { property: "og:title", content: "Materiály — Performer OS" },
-      {
-        property: "og:description",
-        content: "Všechny podklady k výkonu na jednom místě.",
-      },
+      { property: "og:description", content: "Všechny podklady k výkonu na jednom místě." },
     ],
   }),
   component: MaterialsPage,
 });
 
+const fields: Field<MaterialRow>[] = [
+  { key: "label", label: "Název", width: "lg" },
+  { key: "project", label: "Projekt" },
+  { key: "icon", label: "Ikona (🎵 🎬 📄 💃 🔗)" },
+  { key: "url", label: "Odkaz", width: "lg" },
+];
+
 function MaterialsPage() {
+  const { ws, patch } = useWorkspace();
+  const groups = Object.entries(
+    ws.materials.reduce<Record<string, MaterialRow[]>>((acc, m) => {
+      (acc[m.project || "Bez projektu"] ??= []).push(m);
+      return acc;
+    }, {}),
+  );
+
   return (
     <>
       <PageHeader eyebrow="📚 Podklady" title="Materiály" />
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-        {materialGroups.map((g) => (
-          <Panel key={g.label} soft className="text-center">
-            <div className="text-2xl">{g.icon}</div>
-            <div className="font-display mt-2 text-sm font-semibold">{g.label}</div>
-            <div className="text-xs text-mist">{g.count} položek</div>
-          </Panel>
-        ))}
-      </div>
-
       <div className="grid gap-6 lg:grid-cols-3">
-        {materialsByProject.map((group) => (
-          <Panel key={group.project}>
-            <Eyebrow>{group.project}</Eyebrow>
+        {groups.map(([project, items]) => (
+          <Panel key={project}>
+            <Eyebrow>{project}</Eyebrow>
             <ul className="space-y-2 text-sm">
-              {group.items.map((item) => (
-                <li
-                  key={item.label}
-                  className="glass-soft flex items-center gap-3 rounded-xl px-3 py-2"
-                >
+              {items.map((item) => (
+                <li key={item.id} className="glass-soft flex items-center gap-3 rounded-xl px-3 py-2">
                   <span aria-hidden>{item.icon}</span>
-                  <span className="truncate">{item.label}</span>
+                  {item.url ? (
+                    <a href={item.url} target="_blank" rel="noreferrer" className="truncate text-accent">
+                      {item.label}
+                    </a>
+                  ) : (
+                    <span className="truncate">{item.label}</span>
+                  )}
                 </li>
               ))}
             </ul>
           </Panel>
         ))}
       </div>
+
+      <Panel>
+        <RecordEditor
+          title="Upravit materiály"
+          items={ws.materials}
+          fields={fields}
+          titleKey="label"
+          addLabel="Přidat materiál"
+          makeNew={() => ({ id: uid(), project: "", icon: "📄", label: "Nový materiál", url: "" })}
+          onChange={(next) => patch((w) => ({ ...w, materials: next }))}
+        />
+      </Panel>
     </>
   );
 }
