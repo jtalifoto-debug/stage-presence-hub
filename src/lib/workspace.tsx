@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 
+import type { Json } from "@/integrations/supabase/types";
 import { supabase } from "@/integrations/supabase/client";
 import {
   demoWorkspace,
@@ -55,7 +56,7 @@ export async function createPerformer(name: string, demo = false) {
       roles: demo ? demoWorkspace().profile.roles.split(", ") : [],
       home: ws.profile.home,
       is_demo: demo,
-      data: ws as unknown as Record<string, unknown>,
+      data: ws as unknown as Json,
     })
     .select()
     .single();
@@ -115,7 +116,7 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
         await supabase
           .from("performers")
           .update({
-            data: next as unknown as Record<string, unknown>,
+            data: next as unknown as Json,
             name: next.profile.name || "Nový performer",
             roles: next.profile.roles ? next.profile.roles.split(",").map((r) => r.trim()).filter(Boolean) : [],
             home: next.profile.home,
@@ -202,7 +203,7 @@ async function autoBackup(performerId: string, ws: Workspace) {
     performer_id: performerId,
     label: `Automatická záloha ${new Date().toLocaleString("cs-CZ")}`,
     kind: "auto",
-    data: ws as unknown as Record<string, unknown>,
+    data: ws as unknown as Json,
   });
 }
 
@@ -213,7 +214,7 @@ export async function createManualBackup(performerId: string, ws: Workspace, lab
     performer_id: performerId,
     label,
     kind: "manual",
-    data: ws as unknown as Record<string, unknown>,
+    data: ws as unknown as Json,
   });
   if (error) throw error;
 }

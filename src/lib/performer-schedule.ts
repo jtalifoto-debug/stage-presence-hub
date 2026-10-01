@@ -1,7 +1,7 @@
 import { events, type PerfEvent } from "./performer-data";
 
 export type RunSlotState = "done" | "now" | "next";
-export type RunSlot = { time: string; label: string; state: RunSlotState; note?: string };
+export type RunSlot = { time: string; label: string; state: RunSlotState; note?: string | undefined };
 
 const PERFORMING: PerfEvent["type"][] = [
   "představení",
@@ -13,7 +13,7 @@ const PERFORMING: PerfEvent["type"][] = [
 
 function toMinutes(time: string) {
   const [h, m] = time.split(":").map(Number);
-  if (Number.isNaN(h)) return null;
+  if (h === undefined || Number.isNaN(h)) return null;
   return h * 60 + (m || 0);
 }
 
@@ -49,7 +49,7 @@ export function buildRunsheet(event: PerfEvent, nowLabel = "16:10"): RunSlot[] {
   const call = toMinutes(event.callTime ?? "") ?? start - 45;
   const performing = PERFORMING.includes(event.type);
 
-  const slots: { at: number; label: string; note?: string }[] = [
+  const slots: { at: number; label: string; note?: string | undefined }[] = [
     { at: call - travel - 15, label: "Odjezd", note: `${event.city} · ${travel} min cesty` },
     { at: call - 10, label: "Příjezd a parkování", note: event.venue },
     { at: call, label: "Call time", note: event.contact },
