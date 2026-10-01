@@ -3,12 +3,13 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Chip, Eyebrow, Panel, PageHeader, Progress } from "@/components/perf/ui";
 import { eventTypeMeta, formatCzk } from "@/lib/performer-data";
 import {
-  buildRunsheet,
-  eventsByDate,
   formatDateCz,
+  liveRunsheet,
   prepScore,
+  sortEvents,
   weekdayCz,
 } from "@/lib/performer-schedule";
+import { useWorkspace } from "@/lib/workspace";
 
 export const Route = createFileRoute("/_authenticated/kalendar")({
   head: () => ({
@@ -37,24 +38,42 @@ const statusTone = {
 } as const;
 
 function CalendarPage() {
+  const { ws } = useWorkspace();
+  const list = sortEvents(ws.events);
+
   return (
     <>
       <PageHeader eyebrow="📅 Podle typu závazku" title="Kalendář" />
 
       <Panel soft>
-        <div className="flex flex-wrap gap-2">
-          {Object.entries(eventTypeMeta).map(([type, meta]) => (
-            <Chip key={type} tone={meta.tone as "brand"}>
-              {meta.icon} {type}
-            </Chip>
-          ))}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap gap-2">
+            {Object.entries(eventTypeMeta).map(([type, meta]) => {
+              const count = ws.events.filter((e) => e.type === type).length;
+              return (
+                <Chip key={type} tone={(count ? meta.tone : "mist") as "brand"}>
+                  {meta.icon} {type} {count ? `· ${count}` : ""}
+                </Chip>
+              );
+            })}
+          </div>
+          <Link to="/akce" className="font-display text-xs text-accent">
+            + přidat / upravit akce →
+          </Link>
         </div>
       </Panel>
 
+      {list.length === 0 ? (
+        <Panel>
+          <p className="text-sm text-mist">Kalendář je prázdný. Akce přidáš v sekci Akce.</p>
+        </Panel>
+      ) : null}
+
       <div className="space-y-4">
-        {eventsByDate.map((event) => {
-          const runsheet = buildRunsheet(event);
-          const meta = eventTypeMeta[event.type];
+        {list.map((event) => {
+          const runsheet = liveRunsheet(event);
+          const meta = eventTypeMeta[event.type] ?? { icon: "•", tone: "mist" };
+          const score = prepScore(event);
           return (
             <Panel key={event.id}>
               <div className="flex flex-wrap items-start justify-between gap-4">
@@ -78,18 +97,18 @@ function CalendarPage() {
                     </div>
                     <div className="mt-2 flex flex-wrap gap-2">
                       <Chip tone={meta.tone as "brand"}>{event.type}</Chip>
-                      <Chip tone={statusTone[event.status]}>{event.status}</Chip>
+                      <Chip tone={statusTone[event.status] ?? "mist"}>{event.status}</Chip>
                       {event.callTime ? <Chip>🕐 call {event.callTime}</Chip> : null}
-                      {event.fee !== 0 ? <Chip>{formatCzk(event.fee)}</Chip> : null}
+                      {Number(event.fee) ? <Chip>{formatCzk(Number(event.fee))}</Chip> : null}
                     </div>
                   </div>
                 </div>
                 <div className="w-40">
                   <div className="mb-1.5 flex items-center justify-between text-xs">
                     <span className="text-mist">připravenost</span>
-                    <span className="font-display text-accent">{prepScore(event)} %</span>
+                    <span className="font-display text-accent">{score} %</span>
                   </div>
-                  <Progress value={prepScore(event)} />
+                  <Progress value={score} />
                   <Link
                     to="/akce"
                     className="font-display mt-3 block text-right text-xs text-accent"

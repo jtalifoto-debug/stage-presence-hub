@@ -1,15 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { RecordEditor } from "@/components/perf/editable";
 import { Chip, Eyebrow, PageHeader, Panel, Progress } from "@/components/perf/ui";
+import { eventFields, newEvent } from "@/lib/event-fields";
 import { eventTypeMeta, formatCzk } from "@/lib/performer-data";
 import {
   buildEventPrep,
-  buildRunsheet,
-  eventsByDate,
   formatDateCz,
+  liveRunsheet,
   prepScore,
+  sortEvents,
   travelMinutes,
 } from "@/lib/performer-schedule";
+import { useWorkspace } from "@/lib/workspace";
 
 export const Route = createFileRoute("/_authenticated/akce")({
   head: () => ({
@@ -31,22 +34,38 @@ export const Route = createFileRoute("/_authenticated/akce")({
 });
 
 function EventsPage() {
+  const { ws, patch } = useWorkspace();
+  const list = sortEvents(ws.events);
+
   return (
     <>
       <PageHeader eyebrow="🎬 Detail závazků" title="Akce" />
 
+      <Panel>
+        <RecordEditor
+          title="Upravit akce"
+          items={ws.events}
+          fields={eventFields}
+          titleKey="title"
+          addLabel="Přidat akci"
+          makeNew={newEvent}
+          onChange={(next) => patch((w) => ({ ...w, events: next }))}
+        />
+      </Panel>
+
       <div className="space-y-6">
-        {eventsByDate.map((event) => {
+        {list.map((event) => {
           const prep = buildEventPrep(event);
           const missing = prep.filter((p) => !p.done);
-          const runsheet = buildRunsheet(event);
+          const runsheet = liveRunsheet(event);
+          const score = prepScore(event);
 
           return (
             <Panel key={event.id}>
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <div className="eyebrow">
-                    {eventTypeMeta[event.type].icon} {event.type} · {formatDateCz(event.date)}
+                    {eventTypeMeta[event.type]?.icon} {event.type} · {formatDateCz(event.date)}
                   </div>
                   <h2 className="mt-1 text-xl font-semibold">{event.title}</h2>
                 </div>
@@ -56,14 +75,14 @@ function EventsPage() {
               <div className="mt-5 grid gap-6 lg:grid-cols-3">
                 <dl className="space-y-2 text-sm">
                   {[
-                    ["Klient", event.client],
+                    ["Klient", event.client || "—"],
                     ["Místo", `${event.venue}, ${event.city}`],
                     ["Začátek", event.time],
-                    ["Call time", event.callTime ?? "—"],
+                    ["Call time", event.callTime || "—"],
                     ["Délka", event.length],
                     ["Role", event.role],
                     ["Cesta", `${travelMinutes(event)} min`],
-                    ["Honorář", event.fee === 0 ? "—" : formatCzk(event.fee)],
+                    ["Honorář", Number(event.fee) ? formatCzk(Number(event.fee)) : "—"],
                     ["Kontakt", event.contact],
                   ].map(([k, v]) => (
                     <div key={k} className="flex items-start justify-between gap-4">
@@ -94,9 +113,9 @@ function EventsPage() {
                   <Eyebrow>Příprava</Eyebrow>
                   <div className="mb-3 flex items-center justify-between text-xs">
                     <span className="text-mist">{missing.length} položek chybí</span>
-                    <span className="font-display text-accent">{prepScore(event)} %</span>
+                    <span className="font-display text-accent">{score} %</span>
                   </div>
-                  <Progress value={prepScore(event)} />
+                  <Progress value={score} />
                   <ul className="mt-3 space-y-1.5 text-sm">
                     {prep.map((item) => (
                       <li key={item.label} className={item.done ? "text-mist" : ""}>
@@ -104,16 +123,7 @@ function EventsPage() {
                       </li>
                     ))}
                   </ul>
-                  {event.notes ? (
-                    <p className="mt-4 text-xs text-mist">📌 {event.notes}</p>
-                  ) : null}
-                  {event.attachments?.length ? (
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {event.attachments.map((a) => (
-                        <Chip key={a}>📎 {a}</Chip>
-                      ))}
-                    </div>
-                  ) : null}
+                  {event.notes ? <p className="mt-4 text-xs text-mist">📌 {event.notes}</p> : null}
                 </div>
               </div>
             </Panel>

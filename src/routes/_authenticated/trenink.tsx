@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { Chip, Eyebrow, Meter, PageHeader, Panel, StatCard } from "@/components/perf/ui";
-import { bodyFocus, performanceFocus, performanceSkills, trainingLog } from "@/lib/performer-data";
+import { RecordEditor, type Field } from "@/components/perf/editable";
+import { Eyebrow, Meter, PageHeader, Panel, StatCard } from "@/components/perf/ui";
+import { useWorkspace } from "@/lib/workspace";
+import { uid, type TrainingRow } from "@/lib/workspace-types";
 
 export const Route = createFileRoute("/_authenticated/trenink")({
   head: () => ({
@@ -21,66 +23,62 @@ export const Route = createFileRoute("/_authenticated/trenink")({
   component: TrainingPage,
 });
 
+const fields: Field<TrainingRow>[] = [
+  { key: "date", label: "Den / datum" },
+  { key: "total", label: "Minuty", type: "number" },
+  { key: "parts", label: "Co jsem trénovala", width: "lg" },
+  { key: "feeling", label: "Pocit (emoji)" },
+];
+
 function TrainingPage() {
-  const total = trainingLog.reduce((sum, t) => sum + t.total, 0);
+  const { ws, patch } = useWorkspace();
+  const log = ws.training;
+  const total = log.reduce((sum, t) => sum + (Number(t.total) || 0), 0);
+  const feelings = log.reduce<Record<string, number>>((acc, t) => {
+    if (t.feeling) acc[t.feeling] = (acc[t.feeling] ?? 0) + 1;
+    return acc;
+  }, {});
+  const topFeeling = Object.entries(feelings).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "—";
 
   return (
     <>
       <PageHeader eyebrow="💃 Denní práce" title="Trénink" />
 
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        <StatCard value={`${total} min`} label="celkem tento týden" />
-        <StatCard value={String(trainingLog.length)} label="tréninků" />
-        <StatCard value={`${Math.round(total / trainingLog.length)} min`} label="průměr" />
-        <StatCard value="🔥" label="nejčastější pocit" />
+        <StatCard value={`${total} min`} label="celkem v deníku" />
+        <StatCard value={String(log.length)} label="tréninků" />
+        <StatCard value={log.length ? `${Math.round(total / log.length)} min` : "—"} label="průměr" />
+        <StatCard value={topFeeling} label="nejčastější pocit" />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
         <Panel>
-          <Eyebrow>Tělo</Eyebrow>
-          <div className="mb-6 flex flex-wrap gap-2">
-            {bodyFocus.map((f) => (
-              <Chip key={f} tone="ok">
-                {f}
-              </Chip>
-            ))}
-          </div>
-          <Eyebrow>Výkon</Eyebrow>
-          <div className="flex flex-wrap gap-2">
-            {performanceFocus.map((f) => (
-              <Chip key={f} tone="accent">
-                {f}
-              </Chip>
-            ))}
-          </div>
+          <RecordEditor
+            title="Deník tréninků"
+            items={log}
+            fields={fields}
+            titleKey="date"
+            addLabel="Přidat trénink"
+            makeNew={() => ({
+              id: uid(),
+              date: new Date().toLocaleDateString("cs-CZ"),
+              total: 60,
+              parts: "",
+              feeling: "🙂",
+            })}
+            onChange={(next) => patch((w) => ({ ...w, training: next }))}
+          />
         </Panel>
-
         <Panel>
           <Eyebrow>Kde stojíš</Eyebrow>
           <div className="space-y-4">
-            {performanceSkills.map((s) => (
-              <Meter key={s.label} label={s.label} value={s.value} />
+            {ws.skills.map((s) => (
+              <Meter key={s.id} label={s.label} value={Number(s.value) || 0} />
             ))}
           </div>
+          <p className="mt-4 text-xs text-mist">Schopnosti upravíš v sekci Příprava.</p>
         </Panel>
       </div>
-
-      <Panel>
-        <Eyebrow>Deník tréninků</Eyebrow>
-        <ul className="divide-y divide-border">
-          {trainingLog.map((t) => (
-            <li key={t.date} className="flex flex-wrap items-center justify-between gap-3 py-3">
-              <div>
-                <div className="font-display text-sm font-semibold">
-                  {t.date} · {t.total} min
-                </div>
-                <div className="mt-0.5 text-xs text-mist">{t.parts}</div>
-              </div>
-              <span className="text-lg">{t.feeling}</span>
-            </li>
-          ))}
-        </ul>
-      </Panel>
     </>
   );
 }

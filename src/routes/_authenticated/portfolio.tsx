@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import stageImg from "@/assets/stage.jpg";
+import { LabeledField, RecordEditor, TextInput, type Field } from "@/components/perf/editable";
 import { Chip, Eyebrow, PageHeader, Panel } from "@/components/perf/ui";
-import { credits, materialGroups, performer } from "@/lib/performer-data";
+import { useWorkspace } from "@/lib/workspace";
+import { uid, type CreditRow, type Workspace } from "@/lib/workspace-types";
 
 export const Route = createFileRoute("/_authenticated/portfolio")({
   head: () => ({
@@ -22,7 +24,19 @@ export const Route = createFileRoute("/_authenticated/portfolio")({
   component: PortfolioPage,
 });
 
+const creditFields: Field<CreditRow>[] = [
+  { key: "project", label: "Projekt", width: "lg" },
+  { key: "role", label: "Role" },
+  { key: "production", label: "Produkce" },
+  { key: "year", label: "Rok" },
+];
+
 function PortfolioPage() {
+  const { ws, patch } = useWorkspace();
+  const roles = ws.profile.roles.split(",").map((r) => r.trim()).filter(Boolean);
+  const setProfile = (key: keyof Workspace["profile"], v: string) =>
+    patch((w) => ({ ...w, profile: { ...w.profile, [key]: v } }));
+
   return (
     <>
       <PageHeader eyebrow="📸 Vizitka pro produkce" title="Portfolio" />
@@ -39,23 +53,37 @@ function PortfolioPage() {
             />
           </div>
           <div>
-            <h2 className="text-2xl font-semibold">{performer.name}</h2>
+            <h2 className="text-2xl font-semibold">{ws.profile.name || "Bez jména"}</h2>
             <div className="mt-2 flex flex-wrap gap-2">
-              {performer.roles.map((r) => (
+              {roles.map((r) => (
                 <Chip key={r} tone="brand">
                   {r}
                 </Chip>
               ))}
             </div>
-            <p className="mt-4 text-sm text-mist">
-              Působiště {performer.home}. Představení, festivalová vystoupení, moderování galavečerů
-              a práce před kamerou. Rider a ukázky zasílám na vyžádání do 24 hodin.
-            </p>
-            <div className="mt-5 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
-              {materialGroups.slice(0, 4).map((g) => (
-                <div key={g.label} className="glass-soft rounded-xl px-3 py-2">
-                  <div className="font-display text-sm">{g.count}</div>
-                  <div className="text-[11px] text-mist">{g.label}</div>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              <LabeledField label="Jméno">
+                <TextInput value={ws.profile.name} onChange={(v) => setProfile("name", v)} />
+              </LabeledField>
+              <LabeledField label="Působiště">
+                <TextInput value={ws.profile.home} onChange={(v) => setProfile("home", v)} />
+              </LabeledField>
+              <LabeledField label="Role (oddělené čárkou)">
+                <TextInput value={ws.profile.roles} onChange={(v) => setProfile("roles", v)} />
+              </LabeledField>
+              <LabeledField label="Hlavní role teď">
+                <TextInput value={ws.profile.activeRole} onChange={(v) => setProfile("activeRole", v)} />
+              </LabeledField>
+            </div>
+            <div className="mt-5 grid grid-cols-3 gap-3 text-sm">
+              {[
+                [ws.credits.length, "rolí"],
+                [ws.events.length, "akcí"],
+                [ws.materials.length, "materiálů"],
+              ].map(([n, l]) => (
+                <div key={l} className="glass-soft rounded-xl px-3 py-2">
+                  <div className="font-display text-sm">{n}</div>
+                  <div className="text-[11px] text-mist">{l}</div>
                 </div>
               ))}
             </div>
@@ -65,16 +93,14 @@ function PortfolioPage() {
 
       <Panel>
         <Eyebrow>Credits</Eyebrow>
-        <ul className="divide-y divide-border text-sm">
-          {credits.map((c) => (
-            <li key={`${c.project}-${c.year}`} className="flex flex-wrap justify-between gap-2 py-3">
-              <span className="font-display">{c.project}</span>
-              <span className="text-mist">
-                {c.role} · {c.production} · {c.year}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <RecordEditor
+          items={ws.credits}
+          fields={creditFields}
+          titleKey="project"
+          addLabel="Přidat credit"
+          makeNew={() => ({ id: uid(), project: "Nový projekt", role: "", production: "", year: String(new Date().getFullYear()) })}
+          onChange={(next) => patch((w) => ({ ...w, credits: next }))}
+        />
       </Panel>
     </>
   );
